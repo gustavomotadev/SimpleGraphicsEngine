@@ -6,6 +6,16 @@ class Math
 {
 public:
 
+	struct Triangle
+	{
+		int x1;
+		int y1;
+		int x2;
+		int y2;
+		int x3;
+		int y3;
+	};
+
 	struct BarycentricWeights
 	{
 		float w1;
@@ -24,7 +34,10 @@ public:
 		float percentX, float percentY);
 	static int blerpPercentI(int v00, int v01, int v10, int v11, 
 		float percentX, float percentY);
+	static Math::Triangle Math::order(Math::Triangle t);
 	static Math::BarycentricWeights barycentric(int x1, int y1, int x2, int y2, 
 		int x3, int y3, int x, int y);
+	static Math::BarycentricWeights Math::barycentricT(Math::Triangle t, int x, int y);
 	static bool isInsideTriangle(Math::BarycentricWeights weights);
+	friend bool operator == (const Math::Triangle& t1, const Math::Triangle& t2);
 };

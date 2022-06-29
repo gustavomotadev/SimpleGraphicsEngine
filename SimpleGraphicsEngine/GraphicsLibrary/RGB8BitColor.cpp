@@ -51,6 +51,31 @@ RGB8BitColor RGB8BitColor::bilinearInterpolation(
 		c00.b, c01.b, c10.b, c11.b, percentX, percentY));
 }
 
+RGB8BitColor RGB8BitColor::randomNiceColor()
+{
+	switch (rand()%6)
+	{
+		case 0:
+			return RGB8BitColor(255, rand()%255, 0);
+			break;
+		case 1:
+			return RGB8BitColor(rand()%255, 255, 0);
+			break;
+		case 2:
+			return RGB8BitColor(0, 255, rand()%255);
+			break;
+		case 3:
+			return RGB8BitColor(0, rand()%255, 255);
+			break;
+		case 4:
+			return RGB8BitColor(rand()%255, 0, 255);
+			break;
+		case 5:
+			return RGB8BitColor(255, 0, rand()%255);
+			break;
+	}
+}
+
 uint8_t RGB8BitColor::getR() { return this->r; }
 uint8_t RGB8BitColor::getG() { return this->g; }
 uint8_t RGB8BitColor::getB() { return this->b; }

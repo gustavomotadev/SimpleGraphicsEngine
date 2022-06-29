@@ -1,5 +1,10 @@
 #include "Tests.h"
 
+void Tests::seedRandom()
+{
+    srand(time(NULL));
+}
+
 void Tests::gradients(GraphicsAPI* api)
 {
     api->clearWindow(0, 0, 0);
@@ -62,5 +67,91 @@ void Tests::gradients(GraphicsAPI* api)
                 api->drawPoint(x, y, cd.getR(), cd.getG(), cd.getB());
             }
         }
+    }
+}
+
+void Tests::movingGradient(GraphicsAPI* api)
+{
+    static bool firstRun = true;
+    static Math::Triangle t;
+    static Math::Triangle tNext;
+    static float percent = 0.0;
+
+    static RGB8BitColor ca = RGB8BitColor(0, 255, 255);
+    static RGB8BitColor cb = RGB8BitColor(255, 0, 255);
+    static RGB8BitColor cc = RGB8BitColor(255, 255, 0);
+
+    static RGB8BitColor na = RGB8BitColor::randomNiceColor();
+    static RGB8BitColor nb = RGB8BitColor::randomNiceColor();
+    static RGB8BitColor nc = RGB8BitColor::randomNiceColor();
+
+    RGB8BitColor cd = RGB8BitColor(0, 0, 0);
+
+    Math::BarycentricWeights weights;
+
+    if (firstRun)
+    {
+        t.x1 = rand() % api->getWindowWidth();
+        t.y1 = rand() % api->getWindowHeight();
+        t.x2 = rand() % api->getWindowWidth();
+        t.y2 = rand() % api->getWindowHeight();
+        t.x3 = rand() % api->getWindowWidth();
+        t.y3 = rand() % api->getWindowHeight();
+        t = Math::order(t);
+
+        tNext.x1 = rand() % api->getWindowWidth();
+        tNext.y1 = rand() % api->getWindowHeight();
+        tNext.x2 = rand() % api->getWindowWidth();
+        tNext.y2 = rand() % api->getWindowHeight();
+        tNext.x3 = rand() % api->getWindowWidth();
+        tNext.y3 = rand() % api->getWindowHeight();
+        tNext = Math::order(tNext);
+
+        firstRun = false;
+    }
+
+    api->clearWindow(0, 0, 0);
+
+    for (int x = t.x2; x <= t.x3; x++)
+    {
+        for (int y = t.y1; y <= t.y2; y++)
+        {
+            weights = Math::barycentric(t.x1, t.y1, t.x2, t.y2, t.x3, t.y3, x, y);
+            if (Math::isInsideTriangle(weights))
+            {
+                cd = (weights.w1 * ca) + (weights.w2 * cb) + (weights.w3 * cc);
+                api->drawPoint(x, y, cd.getR(), cd.getG(), cd.getB());
+            }
+        }
+    }
+
+    percent += 0.0007;
+    t.x1 = Math::lerpPercentI(t.x1, tNext.x1, percent);
+    t.y1 = Math::lerpPercentI(t.y1, tNext.y1, percent);
+    t.x2 = Math::lerpPercentI(t.x2, tNext.x2, percent);
+    t.y2 = Math::lerpPercentI(t.y2, tNext.y2, percent);
+    t.x3 = Math::lerpPercentI(t.x3, tNext.x3, percent);
+    t.y3 = Math::lerpPercentI(t.y3, tNext.y3, percent);
+    t = Math::order(t);
+
+    ca = RGB8BitColor::linearInterpolation(ca, na, percent);
+    cb = RGB8BitColor::linearInterpolation(cb, nb, percent);
+    cc = RGB8BitColor::linearInterpolation(cc, nc, percent);
+
+    if (percent >= 0.07)
+    {
+        percent = 0;
+
+        tNext.x1 = rand() % api->getWindowWidth();
+        tNext.y1 = rand() % api->getWindowHeight();
+        tNext.x2 = rand() % api->getWindowWidth();
+        tNext.y2 = rand() % api->getWindowHeight();
+        tNext.x3 = rand() % api->getWindowWidth();
+        tNext.y3 = rand() % api->getWindowHeight();
+        tNext = Math::order(tNext);
+
+        na = RGB8BitColor::randomNiceColor();
+        nb = RGB8BitColor::randomNiceColor();
+        nc = RGB8BitColor::randomNiceColor();
     }
 }

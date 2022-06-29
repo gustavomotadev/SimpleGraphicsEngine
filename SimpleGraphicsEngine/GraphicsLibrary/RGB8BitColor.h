@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include "../Math/Math.h"
+#include <cstdlib>
 
 class RGB8BitColor
 {
@@ -20,6 +21,7 @@ class RGB8BitColor
 		static RGB8BitColor bilinearInterpolation(
 			RGB8BitColor c00, RGB8BitColor c01, 
 			RGB8BitColor c10, RGB8BitColor c11, float percentX, float percentY);
+		static RGB8BitColor randomNiceColor();
 		uint8_t getR();
 		uint8_t getG();
 		uint8_t getB();

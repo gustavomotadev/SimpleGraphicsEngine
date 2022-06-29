@@ -54,6 +54,45 @@ float Math::blerpPercentF(float v00, float v01, float v10, float v11,
 		lerpPercentF(v01, v11, percentX), percentY);
 }
 
+Math::Triangle Math::order(Math::Triangle t)
+{
+	int temp;
+	if (t.y2 < t.y1)
+	{
+		temp = t.x1;
+		t.x1 = t.x2;
+		t.x2 = temp;
+		temp = t.y1;
+		t.y1 = t.y2;
+		t.y2 = temp;
+	}
+	if (t.y3 < t.y1)
+	{
+		temp = t.x1;
+		t.x1 = t.x3;
+		t.x3 = temp;
+		temp = t.y1;
+		t.y1 = t.y3;
+		t.y3 = temp;
+	}
+	if (t.x3 < t.x2)
+	{
+		temp = t.x2;
+		t.x2 = t.x3;
+		t.x3 = temp;
+		temp = t.y2;
+		t.y2 = t.y3;
+		t.y3 = temp;
+	}
+
+	return t;
+}
+
+Math::BarycentricWeights Math::barycentricT(Math::Triangle t, int x, int y)
+{
+	return Math::barycentric(t.x1, t.y1, t.x2, t.y2, t.x3, t.y3, x, y);
+}
+
 Math::BarycentricWeights Math::barycentric(int x1, int y1, int x2, int y2,
 	int x3, int y3, int x, int y)
 {
@@ -77,4 +116,18 @@ bool Math::isInsideTriangle(Math::BarycentricWeights weights)
 {
 	if (weights.w1 < 0 || weights.w2 < 0 || weights.w3 < 0) return false;
 	else return true;
+}
+
+bool operator == (const Math::Triangle& t1, const Math::Triangle& t2)
+{
+	if (t1.x1 == t2.x1 &&
+		t1.y1 == t2.y1 &&
+		t1.x2 == t2.x2 &&
+		t1.y2 == t2.y2 &&
+		t1.x3 == t2.x3 &&
+		t1.y3 == t2.y3)
+	{
+		return true;
+	}
+	else return false;
 }

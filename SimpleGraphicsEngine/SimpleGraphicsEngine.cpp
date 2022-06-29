@@ -10,7 +10,8 @@ int main(int argc, char* argv[])
 
     api.clearWindow(0, 0, 0);
 
-    api.setDrawingCallback(Tests::gradients);
+    Tests::seedRandom();
+    api.setDrawingCallback(Tests::movingGradient);
 
     while (api.loopOnce());
 
