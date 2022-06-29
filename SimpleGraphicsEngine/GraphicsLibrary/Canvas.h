@@ -1,3 +1,5 @@
+#pragma once
+
 #include "IntPoint2D.h"
 
 class Canvas

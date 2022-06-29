@@ -28,12 +28,27 @@ RGB8BitColor RGB8BitColor::operator + (const RGB8BitColor& c)
 		Math::uint8ClampU((unsigned int) this->b + c.b));
 }
 
-RGB8BitColor RGB8BitColor::interpolate(RGB8BitColor start, RGB8BitColor end, float point)
+RGB8BitColor RGB8BitColor::linearInterpolation(
+	RGB8BitColor start, RGB8BitColor end, float percent)
 {
-	point = Math::zeroToUnitClampF(point);
-	return RGB8BitColor((uint8_t)(start.r + (((int)end.r - start.r) * point)),
-		(uint8_t)(start.g + (((int)end.g - start.g) * point)),
-		(uint8_t)(start.b + (((int)end.b - start.b) * point)));
+	percent = Math::zeroToUnitClampF(percent);
+	return RGB8BitColor((uint8_t) Math::lerpPercentI(start.r, end.r, percent),
+		(uint8_t) Math::lerpPercentI(start.g, end.g, percent),
+		(uint8_t) Math::lerpPercentI(start.b, end.b, percent));
+}
+
+RGB8BitColor RGB8BitColor::bilinearInterpolation(
+	RGB8BitColor c00, RGB8BitColor c01,
+	RGB8BitColor c10, RGB8BitColor c11, float percentX, float percentY)
+{
+	percentX = Math::zeroToUnitClampF(percentX);
+	percentY = Math::zeroToUnitClampF(percentY);
+	return RGB8BitColor((uint8_t) Math::blerpPercentI(
+		c00.r, c01.r, c10.r, c11.r, percentX, percentY),
+		(uint8_t) Math::blerpPercentI(
+		c00.g, c01.g, c10.g, c11.g, percentX, percentY),
+		(uint8_t) Math::blerpPercentI(
+		c00.b, c01.b, c10.b, c11.b, percentX, percentY));
 }
 
 uint8_t RGB8BitColor::getR() { return this->r; }

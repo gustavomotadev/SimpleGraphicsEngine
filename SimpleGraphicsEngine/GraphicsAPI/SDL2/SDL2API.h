@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../GraphicsAPI.h"
 #include <string>
 #include "SDL.h"
