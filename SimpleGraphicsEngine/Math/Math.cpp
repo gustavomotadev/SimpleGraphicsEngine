@@ -56,28 +56,18 @@ float Math::blerpPercentF(float v00, float v01, float v10, float v11,
 
 Math::Triangle Math::order(Math::Triangle t)
 {
-	if (t.y2 < t.y1)
-	{
-		std::swap(t.x1, t.x2);
-		std::swap(t.y1, t.y2);
-	}
-	if (t.y3 < t.y1)
-	{
-		std::swap(t.x1, t.x3);
-		std::swap(t.y1, t.y3);
-	}
-	if (t.x3 < t.x2)
-	{
-		std::swap(t.x3, t.x2);
-		std::swap(t.y3, t.y2);
-	}
+	if (t.p2.y < t.p1.y) std::swap(t.p1, t.p2);
+
+	if (t.p3.y < t.p1.y) std::swap(t.p1, t.p3);
+
+	if (t.p3.x < t.p2.x) std::swap(t.p3, t.p2);
 
 	return t;
 }
 
 Math::BarycentricWeights Math::barycentricT(Math::Triangle t, int x, int y)
 {
-	return Math::barycentric(t.x1, t.y1, t.x2, t.y2, t.x3, t.y3, x, y);
+	return Math::barycentric(t.p1.x, t.p1.y, t.p2.x, t.p2.y, t.p3.x, t.p3.y, x, y);
 }
 
 Math::BarycentricWeights Math::barycentric(int x1, int y1, int x2, int y2,
@@ -107,12 +97,12 @@ bool Math::isInsideTriangle(Math::BarycentricWeights weights)
 
 bool operator == (const Math::Triangle& t1, const Math::Triangle& t2)
 {
-	if (t1.x1 == t2.x1 &&
-		t1.y1 == t2.y1 &&
-		t1.x2 == t2.x2 &&
-		t1.y2 == t2.y2 &&
-		t1.x3 == t2.x3 &&
-		t1.y3 == t2.y3)
+	if (t1.p1.x == t2.p1.x &&
+		t1.p1.y == t2.p1.y &&
+		t1.p2.x == t2.p2.x &&
+		t1.p2.y == t2.p2.y &&
+		t1.p3.x == t2.p3.x &&
+		t1.p3.y == t2.p3.y)
 	{
 		return true;
 	}

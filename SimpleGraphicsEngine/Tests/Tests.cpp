@@ -91,20 +91,20 @@ void Tests::movingGradient(GraphicsAPI& api)
 
     if (firstRun)
     {
-        t.x1 = rand() % api.getWindowWidth();
-        t.y1 = rand() % api.getWindowHeight();
-        t.x2 = rand() % api.getWindowWidth();
-        t.y2 = rand() % api.getWindowHeight();
-        t.x3 = rand() % api.getWindowWidth();
-        t.y3 = rand() % api.getWindowHeight();
+        t.p1.x = rand() % api.getWindowWidth();
+        t.p1.y = rand() % api.getWindowHeight();
+        t.p2.x = rand() % api.getWindowWidth();
+        t.p2.y = rand() % api.getWindowHeight();
+        t.p3.x = rand() % api.getWindowWidth();
+        t.p3.y = rand() % api.getWindowHeight();
         t = Math::order(t);
 
-        tNext.x1 = rand() % api.getWindowWidth();
-        tNext.y1 = rand() % api.getWindowHeight();
-        tNext.x2 = rand() % api.getWindowWidth();
-        tNext.y2 = rand() % api.getWindowHeight();
-        tNext.x3 = rand() % api.getWindowWidth();
-        tNext.y3 = rand() % api.getWindowHeight();
+        tNext.p1.x = rand() % api.getWindowWidth();
+        tNext.p1.y = rand() % api.getWindowHeight();
+        tNext.p2.x = rand() % api.getWindowWidth();
+        tNext.p2.y = rand() % api.getWindowHeight();
+        tNext.p3.x = rand() % api.getWindowWidth();
+        tNext.p3.y = rand() % api.getWindowHeight();
         tNext = Math::order(tNext);
 
         firstRun = false;
@@ -112,11 +112,11 @@ void Tests::movingGradient(GraphicsAPI& api)
 
     api.clearWindow(0, 0, 0);
 
-    for (int x = t.x2; x <= t.x3; x++)
+    for (int x = t.p2.x; x <= t.p3.x; x++)
     {
-        for (int y = t.y1; y <= t.y2; y++)
+        for (int y = t.p1.y; y <= t.p2.y; y++)
         {
-            weights = Math::barycentric(t.x1, t.y1, t.x2, t.y2, t.x3, t.y3, x, y);
+            weights = Math::barycentric(t.p1.x, t.p1.y, t.p2.x, t.p2.y, t.p3.x, t.p3.y, x, y);
             if (Math::isInsideTriangle(weights))
             {
                 cd = (weights.w1 * ca) + (weights.w2 * cb) + (weights.w3 * cc);
@@ -126,12 +126,12 @@ void Tests::movingGradient(GraphicsAPI& api)
     }
 
     percent += 0.0007;
-    t.x1 = Math::lerpPercentI(t.x1, tNext.x1, percent);
-    t.y1 = Math::lerpPercentI(t.y1, tNext.y1, percent);
-    t.x2 = Math::lerpPercentI(t.x2, tNext.x2, percent);
-    t.y2 = Math::lerpPercentI(t.y2, tNext.y2, percent);
-    t.x3 = Math::lerpPercentI(t.x3, tNext.x3, percent);
-    t.y3 = Math::lerpPercentI(t.y3, tNext.y3, percent);
+    t.p1.x = Math::lerpPercentI(t.p1.x, tNext.p1.x, percent);
+    t.p1.y = Math::lerpPercentI(t.p1.y, tNext.p1.y, percent);
+    t.p2.x = Math::lerpPercentI(t.p2.x, tNext.p2.x, percent);
+    t.p2.y = Math::lerpPercentI(t.p2.y, tNext.p2.y, percent);
+    t.p3.x = Math::lerpPercentI(t.p3.x, tNext.p3.x, percent);
+    t.p3.y = Math::lerpPercentI(t.p3.y, tNext.p3.y, percent);
     t = Math::order(t);
 
     ca = RGB8BitColor::linearInterpolation(ca, na, percent);
@@ -142,12 +142,12 @@ void Tests::movingGradient(GraphicsAPI& api)
     {
         percent = 0;
 
-        tNext.x1 = rand() % api.getWindowWidth();
-        tNext.y1 = rand() % api.getWindowHeight();
-        tNext.x2 = rand() % api.getWindowWidth();
-        tNext.y2 = rand() % api.getWindowHeight();
-        tNext.x3 = rand() % api.getWindowWidth();
-        tNext.y3 = rand() % api.getWindowHeight();
+        tNext.p1.x = rand() % api.getWindowWidth();
+        tNext.p1.y = rand() % api.getWindowHeight();
+        tNext.p2.x = rand() % api.getWindowWidth();
+        tNext.p2.y = rand() % api.getWindowHeight();
+        tNext.p3.x = rand() % api.getWindowWidth();
+        tNext.p3.y = rand() % api.getWindowHeight();
         tNext = Math::order(tNext);
 
         na = RGB8BitColor::randomNiceColor();

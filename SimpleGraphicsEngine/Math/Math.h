@@ -7,14 +7,24 @@ class Math
 {
 public:
 
+	struct Vector2D
+	{
+		float x;
+		float y;
+	};
+
+	struct Vector3D
+	{
+		float x;
+		float y;
+		float z;
+	};
+
 	struct Triangle
 	{
-		int x1;
-		int y1;
-		int x2;
-		int y2;
-		int x3;
-		int y3;
+		Vector2D p1;
+		Vector2D p2;
+		Vector2D p3;
 	};
 
 	struct BarycentricWeights

@@ -1,22 +1,24 @@
 #include "Viewport.h"
 
-Viewport::Viewport(float width, float height, Canvas& viewportCanvas) : canvas(viewportCanvas)
+Viewport::Viewport(float width, float height, float z, Canvas& viewportCanvas) : 
+	canvas(viewportCanvas)
 {
 	this->width = width;
 	this->height = height;
+	this->z = z;
 }
 
-Canvas::IntPoint2D Viewport::viewportToCanvas(Viewport::FloatPoint2D point)
+Math::Vector2D Viewport::viewportToCanvas(Math::Vector3D point)
 {
-	point.x = point.x* (this->canvas.getWidth() / this->width);
-	point.y = point.y * (this->canvas.getHeight() / this->height);
-
-	return Canvas::IntPoint2D {(int) point.x, (int) point.y};
+	return Math::Vector2D {
+		point.x * (this->canvas.getWidth() / this->width), 
+		point.y* (this->canvas.getHeight() / this->height)};
 }
 
-Viewport::FloatPoint2D Viewport::canvasToViewport(Canvas::IntPoint2D point)
+Math::Vector3D Viewport::canvasToViewport(Math::Vector2D point)
 {
-	return Viewport::FloatPoint2D{
+	return Math::Vector3D{
 		point.x*(this->width / this->canvas.getWidth()),
-		point.y*(this->height / this->canvas.getHeight())};
+		point.y*(this->height / this->canvas.getHeight()),
+		this->z};
 }
