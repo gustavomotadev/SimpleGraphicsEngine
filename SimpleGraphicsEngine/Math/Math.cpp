@@ -56,33 +56,20 @@ float Math::blerpPercentF(float v00, float v01, float v10, float v11,
 
 Math::Triangle Math::order(Math::Triangle t)
 {
-	int temp;
 	if (t.y2 < t.y1)
 	{
-		temp = t.x1;
-		t.x1 = t.x2;
-		t.x2 = temp;
-		temp = t.y1;
-		t.y1 = t.y2;
-		t.y2 = temp;
+		std::swap(t.x1, t.x2);
+		std::swap(t.y1, t.y2);
 	}
 	if (t.y3 < t.y1)
 	{
-		temp = t.x1;
-		t.x1 = t.x3;
-		t.x3 = temp;
-		temp = t.y1;
-		t.y1 = t.y3;
-		t.y3 = temp;
+		std::swap(t.x1, t.x3);
+		std::swap(t.y1, t.y3);
 	}
 	if (t.x3 < t.x2)
 	{
-		temp = t.x2;
-		t.x2 = t.x3;
-		t.x3 = temp;
-		temp = t.y2;
-		t.y2 = t.y3;
-		t.y3 = temp;
+		std::swap(t.x3, t.x2);
+		std::swap(t.y3, t.y2);
 	}
 
 	return t;

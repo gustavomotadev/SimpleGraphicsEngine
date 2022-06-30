@@ -11,6 +11,6 @@ class Tests
 {
 	public:
 		static void seedRandom();
-		static void gradients(GraphicsAPI* api);
-		static void movingGradient(GraphicsAPI* api);
+		static void gradients(GraphicsAPI& api);
+		static void movingGradient(GraphicsAPI& api);
 };

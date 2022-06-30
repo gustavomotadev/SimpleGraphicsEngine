@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <functional>
 
 class GraphicsAPI
 {
@@ -10,14 +11,14 @@ class GraphicsAPI
 		std::string windowTitle;
 		unsigned int targetFPS;
 		bool freed = false;
-		void (*drawingCallback)(GraphicsAPI*) = NULL;
+		std::function<void(GraphicsAPI&)> drawingCallback;
 
 	public:
 
 		GraphicsAPI(unsigned int winWidth, unsigned int winHeight,
 			unsigned int targetFPS);
 		~GraphicsAPI();
-		void setDrawingCallback(void (*callback)(GraphicsAPI*));
+		void setDrawingCallback(void (*callback)(GraphicsAPI&));
 		void setTargetFPS(unsigned int target);
 		void setWindowTitle(std::string title);
 		unsigned int getWindowWidth();

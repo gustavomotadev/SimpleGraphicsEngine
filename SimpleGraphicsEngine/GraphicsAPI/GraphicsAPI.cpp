@@ -13,7 +13,7 @@ GraphicsAPI::~GraphicsAPI()
 
 }
 
-void GraphicsAPI::setDrawingCallback(void (*callback)(GraphicsAPI*))
+void GraphicsAPI::setDrawingCallback(void (*callback)(GraphicsAPI&))
 {
 	this->drawingCallback = callback;
 }

@@ -5,20 +5,20 @@ void Tests::seedRandom()
     srand(time(NULL));
 }
 
-void Tests::gradients(GraphicsAPI* api)
+void Tests::gradients(GraphicsAPI& api)
 {
-    api->clearWindow(0, 0, 0);
+    api.clearWindow(0, 0, 0);
 
     RGB8BitColor c1 = RGB8BitColor(0, 0, 0);
     RGB8BitColor c2 = RGB8BitColor(255, 255, 255);
     RGB8BitColor c3 = RGB8BitColor(0, 0, 0);
 
-    for (unsigned int x = 0; x < api->getWindowWidth(); x++)
+    for (unsigned int x = 0; x < api.getWindowWidth(); x++)
     {
-        c3 = RGB8BitColor::linearInterpolation(c1, c2, (float)x / (api->getWindowWidth() - 1));
-        for (unsigned int j = api->getWindowHeight() * 0.15; j < api->getWindowHeight() * 0.30; j++)
+        c3 = RGB8BitColor::linearInterpolation(c1, c2, (float)x / (api.getWindowWidth() - 1));
+        for (unsigned int j = api.getWindowHeight() * 0.15; j < api.getWindowHeight() * 0.30; j++)
         {
-            api->drawPoint(x, j, c3.getR(), c3.getG(), c3.getB());
+            api.drawPoint(x, j, c3.getR(), c3.getG(), c3.getB());
         }
     }
 
@@ -28,9 +28,9 @@ void Tests::gradients(GraphicsAPI* api)
     RGB8BitColor c11 = RGB8BitColor(0, 0, 255);
     RGB8BitColor cxx = RGB8BitColor(0, 0, 0);
 
-    unsigned int x0 = api->getWindowWidth() * 0.15;
-    unsigned int y0 = api->getWindowHeight() * 0.45;
-    unsigned int w = api->getWindowWidth() * 0.30;
+    unsigned int x0 = api.getWindowWidth() * 0.15;
+    unsigned int y0 = api.getWindowHeight() * 0.45;
+    unsigned int w = api.getWindowWidth() * 0.30;
 
     for (unsigned int x = x0; x < x0 + w; x++)
     {
@@ -38,7 +38,7 @@ void Tests::gradients(GraphicsAPI* api)
         {
             cxx = RGB8BitColor::bilinearInterpolation(
                 c00, c01, c10, c11, (float)(x - x0) / w, (float)(y - y0) / w);
-            api->drawPoint(x, y, cxx.getR(), cxx.getG(), cxx.getB());
+            api.drawPoint(x, y, cxx.getR(), cxx.getG(), cxx.getB());
         }
     }
 
@@ -47,12 +47,12 @@ void Tests::gradients(GraphicsAPI* api)
     RGB8BitColor cc = RGB8BitColor(255, 255, 0);
     RGB8BitColor cd = RGB8BitColor(0, 0, 0);
 
-    unsigned int x1 = api->getWindowWidth() * 0.70;
-    unsigned int y1 = api->getWindowHeight() * 0.45;
-    unsigned int x2 = api->getWindowWidth() * 0.55;
-    unsigned int y2 = api->getWindowHeight() * 0.75;
-    unsigned int x3 = api->getWindowWidth() * 0.85;
-    unsigned int y3 = api->getWindowHeight() * 0.75;
+    unsigned int x1 = api.getWindowWidth() * 0.70;
+    unsigned int y1 = api.getWindowHeight() * 0.45;
+    unsigned int x2 = api.getWindowWidth() * 0.55;
+    unsigned int y2 = api.getWindowHeight() * 0.75;
+    unsigned int x3 = api.getWindowWidth() * 0.85;
+    unsigned int y3 = api.getWindowHeight() * 0.75;
 
     Math::BarycentricWeights weights;
 
@@ -64,13 +64,13 @@ void Tests::gradients(GraphicsAPI* api)
             if (Math::isInsideTriangle(weights))
             {
                 cd = (weights.w1 * ca) + (weights.w2 * cb) + (weights.w3 * cc);
-                api->drawPoint(x, y, cd.getR(), cd.getG(), cd.getB());
+                api.drawPoint(x, y, cd.getR(), cd.getG(), cd.getB());
             }
         }
     }
 }
 
-void Tests::movingGradient(GraphicsAPI* api)
+void Tests::movingGradient(GraphicsAPI& api)
 {
     static bool firstRun = true;
     static Math::Triangle t;
@@ -91,26 +91,26 @@ void Tests::movingGradient(GraphicsAPI* api)
 
     if (firstRun)
     {
-        t.x1 = rand() % api->getWindowWidth();
-        t.y1 = rand() % api->getWindowHeight();
-        t.x2 = rand() % api->getWindowWidth();
-        t.y2 = rand() % api->getWindowHeight();
-        t.x3 = rand() % api->getWindowWidth();
-        t.y3 = rand() % api->getWindowHeight();
+        t.x1 = rand() % api.getWindowWidth();
+        t.y1 = rand() % api.getWindowHeight();
+        t.x2 = rand() % api.getWindowWidth();
+        t.y2 = rand() % api.getWindowHeight();
+        t.x3 = rand() % api.getWindowWidth();
+        t.y3 = rand() % api.getWindowHeight();
         t = Math::order(t);
 
-        tNext.x1 = rand() % api->getWindowWidth();
-        tNext.y1 = rand() % api->getWindowHeight();
-        tNext.x2 = rand() % api->getWindowWidth();
-        tNext.y2 = rand() % api->getWindowHeight();
-        tNext.x3 = rand() % api->getWindowWidth();
-        tNext.y3 = rand() % api->getWindowHeight();
+        tNext.x1 = rand() % api.getWindowWidth();
+        tNext.y1 = rand() % api.getWindowHeight();
+        tNext.x2 = rand() % api.getWindowWidth();
+        tNext.y2 = rand() % api.getWindowHeight();
+        tNext.x3 = rand() % api.getWindowWidth();
+        tNext.y3 = rand() % api.getWindowHeight();
         tNext = Math::order(tNext);
 
         firstRun = false;
     }
 
-    api->clearWindow(0, 0, 0);
+    api.clearWindow(0, 0, 0);
 
     for (int x = t.x2; x <= t.x3; x++)
     {
@@ -120,7 +120,7 @@ void Tests::movingGradient(GraphicsAPI* api)
             if (Math::isInsideTriangle(weights))
             {
                 cd = (weights.w1 * ca) + (weights.w2 * cb) + (weights.w3 * cc);
-                api->drawPoint(x, y, cd.getR(), cd.getG(), cd.getB());
+                api.drawPoint(x, y, cd.getR(), cd.getG(), cd.getB());
             }
         }
     }
@@ -142,12 +142,12 @@ void Tests::movingGradient(GraphicsAPI* api)
     {
         percent = 0;
 
-        tNext.x1 = rand() % api->getWindowWidth();
-        tNext.y1 = rand() % api->getWindowHeight();
-        tNext.x2 = rand() % api->getWindowWidth();
-        tNext.y2 = rand() % api->getWindowHeight();
-        tNext.x3 = rand() % api->getWindowWidth();
-        tNext.y3 = rand() % api->getWindowHeight();
+        tNext.x1 = rand() % api.getWindowWidth();
+        tNext.y1 = rand() % api.getWindowHeight();
+        tNext.x2 = rand() % api.getWindowWidth();
+        tNext.y2 = rand() % api.getWindowHeight();
+        tNext.x3 = rand() % api.getWindowWidth();
+        tNext.y3 = rand() % api.getWindowHeight();
         tNext = Math::order(tNext);
 
         na = RGB8BitColor::randomNiceColor();

@@ -64,7 +64,7 @@ bool SDL2API::loopOnce(bool update)
         }
     }
 
-    if (this->drawingCallback != NULL) this->drawingCallback(this);
+    if (this->drawingCallback) this->drawingCallback(*this);
 
     if (this->targetFPS > 0)
     {
