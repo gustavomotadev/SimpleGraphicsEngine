@@ -14,4 +14,5 @@ class Tests
 		static void gradients(GraphicsAPI& api);
 		static void movingGradient(GraphicsAPI& api);
 		static void bigGradient(GraphicsAPI& api);
+		static void solidColor(GraphicsAPI& api);
 };

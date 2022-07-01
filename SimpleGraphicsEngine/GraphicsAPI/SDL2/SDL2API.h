@@ -7,6 +7,7 @@
 #include <sstream>
 #include <iomanip>
 #include <cstring>
+#include <iostream>
 
 class SDL2API : public GraphicsAPI
 {
@@ -14,6 +15,7 @@ class SDL2API : public GraphicsAPI
 		SDL_Window* window = NULL;
 		SDL_Renderer* renderer = NULL;
 		SDL_Texture* texture = NULL;
+		SDL_Surface* surface = NULL;
 		uint8_t * frameBuffer = NULL;
 		unsigned int frameBufferSize = 0;
 		SDL_Event windowEvent = SDL_Event();

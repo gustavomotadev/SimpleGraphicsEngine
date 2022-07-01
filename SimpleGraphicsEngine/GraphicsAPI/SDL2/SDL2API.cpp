@@ -21,6 +21,12 @@ bool SDL2API::init()
         this->windowWidth, this->windowHeight, SDL_WINDOW_SHOWN);
     if (this->window == NULL) return false;
 
+    this->surface = SDL_GetWindowSurface(this->window);
+    this->frameBufferSize = 4 * this->getWindowWidth() * this->getWindowHeight();
+    this->frameBuffer = (uint8_t *) this->surface->pixels;
+    std::cout << SDL_GetPixelFormatName(this->surface->format->format) << std::endl;
+
+    /*
     this->renderer = SDL_CreateRenderer(
         window, -1, SDL_RENDERER_ACCELERATED);
 
@@ -32,6 +38,7 @@ bool SDL2API::init()
 
     int pitch;
     SDL_LockTexture(this->texture, NULL, (void**) &this->frameBuffer, &pitch);
+    */
 
     this->lastFrameTime = SDL_GetTicks();
 
@@ -46,6 +53,7 @@ void SDL2API::clearWindow()
 void SDL2API::drawPoint(unsigned int x, unsigned int y,
     uint8_t r, uint8_t g, uint8_t b)
 {
+    /*
     if (x < this->getWindowWidth() &&
         y < this->getWindowHeight())
     {
@@ -54,15 +62,27 @@ void SDL2API::drawPoint(unsigned int x, unsigned int y,
         this->frameBuffer[pos+1] = g;
         this->frameBuffer[pos+2] = b;
     }
+    */
+    if (x < this->getWindowWidth() &&
+        y < this->getWindowHeight())
+    {
+        unsigned int pos = 4 * y * this->getWindowWidth() + 4 * x;
+        this->frameBuffer[pos] = b;
+        this->frameBuffer[pos + 1] = g;
+        this->frameBuffer[pos + 2] = r;
+    }
 }
 
 void SDL2API::updateScreen()
 {
-    static int pitch;
+    /*
+    * static int pitch;
     SDL_UnlockTexture(this->texture);
     SDL_RenderCopy(this->renderer, this->texture, NULL, NULL);
     SDL_RenderPresent(renderer);
     SDL_LockTexture(this->texture, NULL, (void**)&this->frameBuffer, &pitch);
+    */
+    SDL_UpdateWindowSurface(this->window);
 }
 
 bool SDL2API::loopOnce(bool update)
@@ -106,6 +126,7 @@ void SDL2API::freeResources()
 {
     SDL_DestroyTexture(this->texture);
     SDL_DestroyRenderer(this->renderer);
+    SDL_FreeSurface(this->surface);
     SDL_DestroyWindow(this->window);
     SDL_Quit();
 }

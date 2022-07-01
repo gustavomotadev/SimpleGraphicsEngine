@@ -178,3 +178,18 @@ void Tests::bigGradient(GraphicsAPI& api)
         }
     }
 }
+
+void Tests::solidColor(GraphicsAPI& api)
+{
+    api.clearWindow();
+
+    RGB8BitColor c = RGB8BitColor(255, 255, 0);
+
+    for (unsigned int x = 0; x < api.getWindowWidth(); x++)
+    {
+        for (unsigned int y = 0; y < api.getWindowHeight(); y++)
+        {
+            api.drawPoint(x, y, c.getR(), c.getG(), c.getB());
+        }
+    }
+}

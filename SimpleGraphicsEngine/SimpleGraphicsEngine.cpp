@@ -2,7 +2,7 @@
 
 int main(int argc, char* argv[])
 {
-    SDL2API api = SDL2API(640, 640, 60);
+    SDL2API api = SDL2API(1600, 900, 60);
 
     api.init();
 
