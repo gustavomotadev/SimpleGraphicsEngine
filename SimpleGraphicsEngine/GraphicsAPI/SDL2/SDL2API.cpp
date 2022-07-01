@@ -26,20 +26,6 @@ bool SDL2API::init()
     this->frameBuffer = (uint8_t *) this->surface->pixels;
     std::cout << SDL_GetPixelFormatName(this->surface->format->format) << std::endl;
 
-    /*
-    this->renderer = SDL_CreateRenderer(
-        window, -1, SDL_RENDERER_ACCELERATED);
-
-    this->texture = SDL_CreateTexture(
-        renderer, SDL_PIXELFORMAT_RGB24, SDL_TEXTUREACCESS_STREAMING,
-        this->getWindowWidth(), this->getWindowHeight());
-
-    this->frameBufferSize = 3 * this->getWindowWidth() * this->getWindowHeight();
-
-    int pitch;
-    SDL_LockTexture(this->texture, NULL, (void**) &this->frameBuffer, &pitch);
-    */
-
     this->lastFrameTime = SDL_GetTicks();
 
     return true;
@@ -53,19 +39,11 @@ void SDL2API::clearWindow()
 void SDL2API::drawPoint(unsigned int x, unsigned int y,
     uint8_t r, uint8_t g, uint8_t b)
 {
-    /*
     if (x < this->getWindowWidth() &&
         y < this->getWindowHeight())
     {
-        unsigned int pos = 3*y*this->getWindowWidth() + 3*x;
-        this->frameBuffer[pos] = r;
-        this->frameBuffer[pos+1] = g;
-        this->frameBuffer[pos+2] = b;
-    }
-    */
-    if (x < this->getWindowWidth() &&
-        y < this->getWindowHeight())
-    {
+        //ASSUMING PIXEL FORMAT IS SDL_PIXELFORMAT_RGB888
+        //THAT IS 32BIT WITH MASK BGRX
         unsigned int pos = 4 * y * this->getWindowWidth() + 4 * x;
         this->frameBuffer[pos] = b;
         this->frameBuffer[pos + 1] = g;
@@ -75,13 +53,6 @@ void SDL2API::drawPoint(unsigned int x, unsigned int y,
 
 void SDL2API::updateScreen()
 {
-    /*
-    * static int pitch;
-    SDL_UnlockTexture(this->texture);
-    SDL_RenderCopy(this->renderer, this->texture, NULL, NULL);
-    SDL_RenderPresent(renderer);
-    SDL_LockTexture(this->texture, NULL, (void**)&this->frameBuffer, &pitch);
-    */
     SDL_UpdateWindowSurface(this->window);
 }
 
@@ -124,8 +95,6 @@ bool SDL2API::loopOnce(bool update)
 
 void SDL2API::freeResources()
 {
-    SDL_DestroyTexture(this->texture);
-    SDL_DestroyRenderer(this->renderer);
     SDL_FreeSurface(this->surface);
     SDL_DestroyWindow(this->window);
     SDL_Quit();

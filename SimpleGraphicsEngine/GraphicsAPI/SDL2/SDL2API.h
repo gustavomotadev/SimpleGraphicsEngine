@@ -13,8 +13,6 @@ class SDL2API : public GraphicsAPI
 {
 	protected:
 		SDL_Window* window = NULL;
-		SDL_Renderer* renderer = NULL;
-		SDL_Texture* texture = NULL;
 		SDL_Surface* surface = NULL;
 		uint8_t * frameBuffer = NULL;
 		unsigned int frameBufferSize = 0;
