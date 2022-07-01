@@ -6,13 +6,17 @@
 #include <cstdint>
 #include <sstream>
 #include <iomanip>
+#include <cstring>
+#include <iostream>
 
 class SDL2API : public GraphicsAPI
 {
 	protected:
 		SDL_Window* window = NULL;
-		SDL_Surface* windowSurface = NULL;
-		SDL_Renderer* softwareRenderer = NULL;
+		SDL_Renderer* renderer = NULL;
+		SDL_Texture* texture = NULL;
+		uint8_t * frameBuffer = NULL;
+		unsigned int frameBufferSize = 0;
 		SDL_Event windowEvent = SDL_Event();
 		uint32_t lastFrameTime = 0;
 
@@ -21,7 +25,7 @@ class SDL2API : public GraphicsAPI
 			unsigned int targetFPS);
 		~SDL2API();
 		bool init() override;
-		void clearWindow(uint8_t r, uint8_t g, uint8_t b) override;
+		void clearWindow() override;
 		void drawPoint(unsigned int x, unsigned int y,
 			uint8_t r, uint8_t g, uint8_t b) override;
 		void updateScreen() override;

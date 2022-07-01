@@ -24,7 +24,7 @@ class GraphicsAPI
 		unsigned int getWindowWidth();
 		unsigned int getWindowHeight();
 		virtual bool init() = 0;
-		virtual void clearWindow(uint8_t r, uint8_t g, uint8_t b) = 0;
+		virtual void clearWindow() = 0;
 		virtual void drawPoint(unsigned int x, unsigned int y, 
 			uint8_t r, uint8_t g, uint8_t b) = 0;
 		virtual void updateScreen() = 0;

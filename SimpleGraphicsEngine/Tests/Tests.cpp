@@ -7,7 +7,7 @@ void Tests::seedRandom()
 
 void Tests::gradients(GraphicsAPI& api)
 {
-    api.clearWindow(0, 0, 0);
+    api.clearWindow();
 
     RGB8BitColor c1 = RGB8BitColor(0, 0, 0);
     RGB8BitColor c2 = RGB8BitColor(255, 255, 255);
@@ -110,7 +110,7 @@ void Tests::movingGradient(GraphicsAPI& api)
         firstRun = false;
     }
 
-    api.clearWindow(0, 0, 0);
+    api.clearWindow();
 
     for (int x = t.p2.x; x <= t.p3.x; x++)
     {
@@ -153,5 +153,28 @@ void Tests::movingGradient(GraphicsAPI& api)
         na = RGB8BitColor::randomNiceColor();
         nb = RGB8BitColor::randomNiceColor();
         nc = RGB8BitColor::randomNiceColor();
+    }
+}
+
+void Tests::bigGradient(GraphicsAPI& api)
+{
+    api.clearWindow();
+
+    RGB8BitColor c00 = RGB8BitColor(255, 0, 0);
+    RGB8BitColor c01 = RGB8BitColor(0, 255, 0);
+    RGB8BitColor c10 = RGB8BitColor(255, 255, 0);
+    RGB8BitColor c11 = RGB8BitColor(0, 0, 255);
+    RGB8BitColor cxx = RGB8BitColor(0, 0, 0);
+
+    for (unsigned int x = 0; x < api.getWindowWidth(); x++)
+    {
+        for (unsigned int y = 0; y < api.getWindowHeight(); y++)
+        {
+            cxx = RGB8BitColor::bilinearInterpolation(
+                c00, c01, c10, c11, 
+                (float) x / api.getWindowWidth(), 
+                (float) y / api.getWindowHeight());
+            api.drawPoint(x, y, cxx.getR(), cxx.getG(), cxx.getB());
+        }
     }
 }

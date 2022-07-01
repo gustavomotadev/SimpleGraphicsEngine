@@ -13,4 +13,5 @@ class Tests
 		static void seedRandom();
 		static void gradients(GraphicsAPI& api);
 		static void movingGradient(GraphicsAPI& api);
+		static void bigGradient(GraphicsAPI& api);
 };

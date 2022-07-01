@@ -6,12 +6,12 @@ int main(int argc, char* argv[])
 
     api.init();
 
-    api.setWindowTitle("Simple Graphics Engine");
+    api.setWindowTitle("SGE");
 
-    api.clearWindow(0, 0, 0);
+    api.clearWindow();
 
     Tests::seedRandom();
-    api.setDrawingCallback(Tests::movingGradient);
+    api.setDrawingCallback(Tests::gradients);
 
     while (api.loopOnce());
 

@@ -9,7 +9,7 @@ SDL2API::SDL2API(unsigned int winWidth, unsigned int winHeight,
 
 SDL2API::~SDL2API()
 {
-
+    this->freeResources();
 }
 
 bool SDL2API::init()
@@ -21,37 +21,49 @@ bool SDL2API::init()
         this->windowWidth, this->windowHeight, SDL_WINDOW_SHOWN);
     if (this->window == NULL) return false;
 
-    this->windowSurface = SDL_GetWindowSurface(this->window);
-    if (this->windowSurface == NULL) return false;
+    this->renderer = SDL_CreateRenderer(
+        window, -1, SDL_RENDERER_ACCELERATED);
 
-    this->softwareRenderer = SDL_CreateSoftwareRenderer(this->windowSurface);
-    if (this->softwareRenderer == NULL) return false;
+    this->texture = SDL_CreateTexture(
+        renderer, SDL_PIXELFORMAT_RGB24, SDL_TEXTUREACCESS_STREAMING,
+        this->getWindowWidth(), this->getWindowHeight());
+
+    this->frameBufferSize = 3 * this->getWindowWidth() * this->getWindowHeight();
+
+    int pitch;
+    SDL_LockTexture(this->texture, NULL, (void**) &this->frameBuffer, &pitch);
+    std::cout << pitch << std::endl;
 
     this->lastFrameTime = SDL_GetTicks();
 
     return true;
 }
 
-void SDL2API::clearWindow(uint8_t r, uint8_t g, uint8_t b)
+void SDL2API::clearWindow()
 {
-    SDL_SetRenderDrawColor(this->softwareRenderer, 
-        r, g, b, SDL_ALPHA_OPAQUE);
-
-    SDL_RenderClear(this->softwareRenderer);
+    std::memset(this->frameBuffer, 0, this->frameBufferSize);
 }
 
 void SDL2API::drawPoint(unsigned int x, unsigned int y,
     uint8_t r, uint8_t g, uint8_t b)
 {
-    SDL_SetRenderDrawColor(this->softwareRenderer,
-        r, g, b, SDL_ALPHA_OPAQUE);
-
-    SDL_RenderDrawPoint(this->softwareRenderer, x, y);
+    if (x < this->getWindowWidth() &&
+        y < this->getWindowHeight())
+    {
+        unsigned int pos = 3*y*this->getWindowWidth() + 3*x;
+        this->frameBuffer[pos] = r;
+        this->frameBuffer[pos+1] = g;
+        this->frameBuffer[pos+2] = b;
+    }
 }
 
 void SDL2API::updateScreen()
 {
-    SDL_UpdateWindowSurface(this->window);
+    static int pitch;
+    SDL_UnlockTexture(this->texture);
+    SDL_RenderCopy(this->renderer, this->texture, NULL, NULL);
+    SDL_RenderPresent(renderer);
+    SDL_LockTexture(this->texture, NULL, (void**)&this->frameBuffer, &pitch);
 }
 
 bool SDL2API::loopOnce(bool update)
@@ -93,8 +105,8 @@ bool SDL2API::loopOnce(bool update)
 
 void SDL2API::freeResources()
 {
-    SDL_DestroyRenderer(this->softwareRenderer);
-    SDL_FreeSurface(this->windowSurface);
+    SDL_DestroyTexture(this->texture);
+    SDL_DestroyRenderer(this->renderer);
     SDL_DestroyWindow(this->window);
     SDL_Quit();
 }
