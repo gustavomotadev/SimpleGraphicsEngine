@@ -32,7 +32,6 @@ bool SDL2API::init()
 
     int pitch;
     SDL_LockTexture(this->texture, NULL, (void**) &this->frameBuffer, &pitch);
-    std::cout << pitch << std::endl;
 
     this->lastFrameTime = SDL_GetTicks();
 

@@ -7,7 +7,6 @@
 #include <sstream>
 #include <iomanip>
 #include <cstring>
-#include <iostream>
 
 class SDL2API : public GraphicsAPI
 {

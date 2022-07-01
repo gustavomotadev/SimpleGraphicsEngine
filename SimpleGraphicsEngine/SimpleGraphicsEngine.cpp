@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
     api.clearWindow();
 
     Tests::seedRandom();
-    api.setDrawingCallback(Tests::gradients);
+    api.setDrawingCallback(Tests::bigGradient);
 
     while (api.loopOnce());
 
